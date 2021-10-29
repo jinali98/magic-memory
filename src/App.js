@@ -44,7 +44,15 @@ function App() {
   //validate choices
   const validateTurns = () => {
     if (choiceOne.src === choiceTwo.src) {
-      // setMatchedPairs((prev) => [...prev, choiceOne, choiceTwo]);
+      setCards((prevCards) => {
+        return prevCards.map((card) => {
+          if (card.src === choiceOne.src) {
+            return { ...card, matched: true };
+          } else {
+            return card;
+          }
+        });
+      });
       resetTurns();
       return true;
     } else {
@@ -65,7 +73,12 @@ function App() {
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
         {cards.map((card) => (
-          <SingleCard key={card.id} card={card} handleChoice={handleChoice} />
+          <SingleCard
+            key={card.id}
+            card={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
         ))}
       </div>
     </div>
